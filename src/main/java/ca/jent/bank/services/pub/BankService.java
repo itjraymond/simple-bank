@@ -2,18 +2,22 @@ package ca.jent.bank.services.pub;
 
 import ca.jent.bank.domain.Access;
 import ca.jent.bank.domain.Account;
+import ca.jent.bank.domain.AccountTransaction;
 import ca.jent.bank.domain.User;
 import ca.jent.bank.services.pri.AccessService;
 import ca.jent.bank.services.pri.AccountService;
+import ca.jent.bank.services.pri.AccountTransactionService;
 import ca.jent.bank.services.pri.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BankService {
 
     private static UserService userService = new UserService();
     private static AccessService accessService = new AccessService();
     private static AccountService accountService = new AccountService();
+    private static AccountTransactionService accountTransactionService = new AccountTransactionService();
 
     public User registerUser(String firstname, String lastname, String email, String password) {
         User user = userService.create(firstname, lastname, email);
@@ -33,7 +37,6 @@ public class BankService {
     }
 
     public Account getBankAccountFor(User user, String accountId) {
-        Account account;
         if (user.accountExist(accountId)) {
             return accountService.getAccountById(accountId);
         }
@@ -58,5 +61,24 @@ public class BankService {
             return;
         }
         throw new RuntimeException("Account does not belong to this user.");
+    }
+
+    public void deleteUserAccount(User user, String accountId) {
+        if (user.accountExist(accountId)) {
+            accountService.deleteAccountById(accountId);
+            user.removeAccountById(accountId);
+        }
+    }
+
+    public List<AccountTransaction> getAccountActivity(User user, String accountId) {
+        if (user.accountExist(accountId)) {
+            return accountTransactionService.getAccountTransactionByAccountId(accountId);
+        }
+        throw new RuntimeException("Account does not belong to this user.");
+    }
+
+    public List<AccountTransaction> getAccountActivity(User user) {
+        List<String> accounts = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
+        return accountTransactionService.getAccountTransactions(accounts);
     }
 }
