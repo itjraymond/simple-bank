@@ -34,7 +34,9 @@ public class AccountService {
             account.setBalance(account.getBalance() - amount);
             AccountTransaction accountTransaction = new AccountTransaction(accountId, "WITHDRAW", amount);
             AccountTransactionRepository.save(accountTransaction);
+            return;
         }
+        throw new RuntimeException("Not enough funds.");
     }
 
     public void deleteAccountById(String accountId) {

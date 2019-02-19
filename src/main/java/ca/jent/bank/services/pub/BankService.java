@@ -81,4 +81,8 @@ public class BankService {
         List<String> accounts = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
         return accountTransactionService.getAccountTransactions(accounts);
     }
+
+    public List<User> getBankUsers() {
+        return userService.getAllUsers();
+    }
 }

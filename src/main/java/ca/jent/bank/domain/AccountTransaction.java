@@ -1,6 +1,7 @@
 package ca.jent.bank.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ public class AccountTransaction {
     private String accountId;
     private String type;
     private double amount;
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 
     private AccountTransaction(){}
 
@@ -18,7 +19,7 @@ public class AccountTransaction {
         this.accountId = accountId;
         this.type = type;
         this.amount = amount;
-        this.timestamp = LocalDate.now();
+        this.timestamp = LocalDateTime.now();
     }
 
     public String getId() {
@@ -37,7 +38,7 @@ public class AccountTransaction {
         return amount;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
