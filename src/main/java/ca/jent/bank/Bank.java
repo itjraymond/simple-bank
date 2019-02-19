@@ -25,6 +25,7 @@ public class Bank {
     public static void main(String[] args) {
 
         Bank cliBank = new Bank();
+        bankService.restoreDataStores();
 
         while(true) {
             try {
@@ -76,6 +77,10 @@ public class Bank {
 
                     case "10":
                         cliBank.showAccountTransactions(cliBank.userContext, cliBank.accountContext.getId());
+                        break;
+
+                    case "11":
+                        cliBank.saveDataStores();
                         break;
                 }
             } catch (Exception e) {
@@ -149,6 +154,14 @@ public class Bank {
         bankService.getBankUsers().stream().forEach(System.out::println);
     }
 
+    public void saveDataStores() {
+        bankService.saveDataStores();
+    }
+
+    public void restoreDataStores() {
+        bankService.restoreDataStores();
+    }
+
     public void displayCurrentState() {
         if (userContext != null) {
             System.out.println("Current User:    " + userContext.getFirstname() + " " + userContext.getLastname());
@@ -177,5 +190,8 @@ public class Bank {
                 System.out.println(" 10 Show account transactions");
             }
         }
+        System.out.println(" 11 Save data stores");
+        System.out.println(" 12 Restore data stores");
+
     }
 }

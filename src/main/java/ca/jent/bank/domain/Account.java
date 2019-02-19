@@ -8,6 +8,10 @@ public class Account {
     private double balance;
     private String type;
 
+    public Account(){
+        this("CHEQUING", 0.0);
+    }
+
     public Account(String type) {
         this(type, 0.0);
     }

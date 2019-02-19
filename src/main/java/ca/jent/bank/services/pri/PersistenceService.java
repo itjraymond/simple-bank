@@ -1,13 +1,13 @@
-package ca.jent.bank.repositories;
+package ca.jent.bank.services.pri;
 
 import ca.jent.bank.domain.Account;
+import ca.jent.bank.repositories.AccountRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -17,38 +17,29 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AccountRepository {
-    private static Map<String, Account> accountStore = new HashMap<>();
+public class PersistenceService {
 
-    public static void save(Account account) {
-        accountStore.put(account.getId(), account);
-    }
+    public void saveAllRepositories() {
+        try {
+            AccountRepository.marshall();
 
-    public static Account getAccountById(String accountId) {
-        if (accountStore.containsKey(accountId)) {
-            return accountStore.get(accountId);
+        } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException("JSON Parsing exception!!  or Problems with the file");
         }
-        throw new RuntimeException("Account (id=" + accountId + ") not found");
     }
 
-    public static List<Account> getAccountByIds(List<String> accountIds) {
-        return accountIds
-                .stream()
-                .filter(accountId -> accountStore.containsKey(accountId))
-                .map(accountId -> accountStore.get(accountId))
-                .collect(Collectors.toList());
-    }
+    public void restoreAllRepositories() {
+        try {
+            AccountRepository.unmarshall();
 
-    public static void delete(String accountId) {
-        if (accountStore.containsKey(accountId)) {
-            accountStore.remove(accountId);
-            return;
+        } catch (IOException | URISyntaxException ex) {
+            throw new RuntimeException("Unable to recover data store.");
         }
-        throw new RuntimeException("Cannot delete Account with id '" + accountId + "' - Account not found.");
     }
+
+
 
     public static void marshall() throws IOException, URISyntaxException {
 
@@ -79,4 +70,5 @@ public class AccountRepository {
         Path location = Paths.get(url.toURI());
         return location.toFile();
     }
+
 }
