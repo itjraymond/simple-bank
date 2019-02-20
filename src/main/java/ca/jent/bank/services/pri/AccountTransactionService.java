@@ -1,7 +1,6 @@
 package ca.jent.bank.services.pri;
 
 import ca.jent.bank.domain.AccountTransaction;
-import ca.jent.bank.domain.User;
 import ca.jent.bank.repositories.AccountTransactionRepository;
 
 import java.util.Comparator;

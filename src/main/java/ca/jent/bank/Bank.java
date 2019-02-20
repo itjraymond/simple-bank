@@ -1,13 +1,8 @@
 package ca.jent.bank;
 
-import ca.jent.bank.domain.Access;
 import ca.jent.bank.domain.Account;
 import ca.jent.bank.domain.AccountTransaction;
 import ca.jent.bank.domain.User;
-import ca.jent.bank.services.pri.AccessService;
-import ca.jent.bank.services.pri.AccountService;
-import ca.jent.bank.services.pri.AccountTransactionService;
-import ca.jent.bank.services.pri.UserService;
 import ca.jent.bank.services.pub.BankService;
 
 import java.util.Comparator;
@@ -25,6 +20,7 @@ public class Bank {
     public static void main(String[] args) {
 
         Bank cliBank = new Bank();
+        bankService.restoreDataStores();
 
         while(true) {
             try {
@@ -77,11 +73,24 @@ public class Bank {
                     case "10":
                         cliBank.showAccountTransactions(cliBank.userContext, cliBank.accountContext.getId());
                         break;
+
+                    case "11":
+                        cliBank.saveDataStores();
+                        break;
+
+                    case "12":
+                        cliBank.showUserAccounts();
+                        break;
                 }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
+    }
+
+    private void showUserAccounts() {
+        bankService.getAccountByUser(userContext)
+                   .forEach(System.out::println);
     }
 
     public User register() {
@@ -149,6 +158,14 @@ public class Bank {
         bankService.getBankUsers().stream().forEach(System.out::println);
     }
 
+    public void saveDataStores() {
+        bankService.saveDataStores();
+    }
+
+    public void restoreDataStores() {
+        bankService.restoreDataStores();
+    }
+
     public void displayCurrentState() {
         if (userContext != null) {
             System.out.println("Current User:    " + userContext.getFirstname() + " " + userContext.getLastname());
@@ -176,6 +193,10 @@ public class Bank {
                 System.out.println(" 9 Withdraw from current account");
                 System.out.println(" 10 Show account transactions");
             }
+            System.out.println(" 13 Show current user accounts");
         }
+        System.out.println(" 11 Save data stores");
+        System.out.println(" 12 Restore data stores");
+
     }
 }

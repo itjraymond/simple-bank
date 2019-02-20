@@ -5,6 +5,8 @@ import ca.jent.bank.domain.AccountTransaction;
 import ca.jent.bank.repositories.AccountRepository;
 import ca.jent.bank.repositories.AccountTransactionRepository;
 
+import java.util.List;
+
 public class AccountService {
 
 
@@ -44,5 +46,9 @@ public class AccountService {
         AccountTransaction accountTransaction = new AccountTransaction(accountId, "DELETE", account.getBalance());
         AccountRepository.delete(accountId);
         AccountTransactionRepository.save(accountTransaction);
+    }
+
+    public List<Account> getAccountsByIds(List<String> accountIds) {
+        return AccountRepository.getAccountByIds(accountIds);
     }
 }

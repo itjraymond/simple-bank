@@ -2,8 +2,11 @@ package ca.jent.bank.repositories;
 
 import ca.jent.bank.domain.Access;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AccessRepository {
 
@@ -23,5 +26,13 @@ public class AccessRepository {
             }
         }
         throw new RuntimeException("Access denied");
+    }
+
+    public static List<Access> getDataStore() {
+        return new ArrayList<>(accessStore.values());
+    }
+
+    public static void setDataStore(List<Access> accesses) {
+        accessStore = accesses.stream().collect(Collectors.toMap(Access::getEmail, access -> access));
     }
 }

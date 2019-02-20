@@ -7,6 +7,7 @@ import ca.jent.bank.domain.User;
 import ca.jent.bank.services.pri.AccessService;
 import ca.jent.bank.services.pri.AccountService;
 import ca.jent.bank.services.pri.AccountTransactionService;
+import ca.jent.bank.services.pri.PersistenceService;
 import ca.jent.bank.services.pri.UserService;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class BankService {
     private static AccessService accessService = new AccessService();
     private static AccountService accountService = new AccountService();
     private static AccountTransactionService accountTransactionService = new AccountTransactionService();
+    private static PersistenceService persistenceService = new PersistenceService();
 
     public User registerUser(String firstname, String lastname, String email, String password) {
         User user = userService.create(firstname, lastname, email);
@@ -70,6 +72,11 @@ public class BankService {
         }
     }
 
+    public List<Account> getAccountByUser(User user) {
+        List<String> accountIds = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
+        return accountService.getAccountsByIds(accountIds);
+    }
+
     public List<AccountTransaction> getAccountActivity(User user, String accountId) {
         if (user.accountExist(accountId)) {
             return accountTransactionService.getAccountTransactionByAccountId(accountId);
@@ -84,5 +91,13 @@ public class BankService {
 
     public List<User> getBankUsers() {
         return userService.getAllUsers();
+    }
+
+    public void saveDataStores() {
+        persistenceService.saveAllRepositories();
+    }
+
+    public void restoreDataStores() {
+        persistenceService.restoreAllRepositories();
     }
 }

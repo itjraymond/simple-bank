@@ -1,6 +1,8 @@
 package ca.jent.bank.domain;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -10,9 +12,12 @@ public class AccountTransaction {
     private String accountId;
     private String type;
     private double amount;
+
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @JsonSerialize(using = JsonDateSerializer.class)
     private LocalDateTime timestamp;
 
-    private AccountTransaction(){}
+    public AccountTransaction(){}
 
     public AccountTransaction(String accountId, String type, double amount) {
         this.id = UUID.randomUUID().toString();

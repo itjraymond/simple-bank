@@ -2,6 +2,7 @@ package ca.jent.bank.repositories;
 
 import ca.jent.bank.domain.AccountTransaction;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,5 +29,13 @@ public class AccountTransactionRepository {
                 .stream()
                 .filter(accountTransaction -> accountTransaction.getAccountId().equals(accountId))
                 .collect(Collectors.toList());
+    }
+
+    public static List<AccountTransaction> getDataStore() {
+        return new ArrayList<>(accountTransactionStore.values());
+    }
+
+    public static void setDataStore(List<AccountTransaction> accountTransactions) {
+        accountTransactionStore = accountTransactions.stream().collect(Collectors.toMap(AccountTransaction::getId, accountTransaction -> accountTransaction));
     }
 }

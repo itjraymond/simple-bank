@@ -35,4 +35,13 @@ public class UserRepository {
 
         throw new RuntimeException("Cannot delete user with id '" + userId + "' - User does not exist.");
     }
+
+
+    public static List<User> getDataStore() {
+        return new ArrayList<>(userStore.values());
+    }
+
+    public static void setDataStore(List<User> users) {
+        userStore = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+    }
 }

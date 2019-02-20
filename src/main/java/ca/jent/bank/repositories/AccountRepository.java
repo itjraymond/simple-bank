@@ -2,6 +2,7 @@ package ca.jent.bank.repositories;
 
 import ca.jent.bank.domain.Account;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,10 @@ public class AccountRepository {
     }
 
     public static List<Account> getAccountByIds(List<String> accountIds) {
-        return accountIds
-                .stream()
-                .filter(accountId -> accountStore.containsKey(accountId))
-                .map(accountId -> accountStore.get(accountId))
-                .collect(Collectors.toList());
+        return accountIds.stream()
+                         .filter(accountId -> accountStore.containsKey(accountId))
+                         .map(accountId -> accountStore.get(accountId))
+                         .collect(Collectors.toList());
     }
 
     public static void delete(String accountId) {
@@ -36,4 +36,13 @@ public class AccountRepository {
         }
         throw new RuntimeException("Cannot delete Account with id '" + accountId + "' - Account not found.");
     }
+
+    public static List<Account> getDataStore() {
+        return new ArrayList<>(accountStore.values());
+    }
+
+    public static void setDataStore(List<Account> accounts) {
+        accountStore = accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));
+    }
+
 }
