@@ -50,33 +50,41 @@ public class AccountRepository {
         throw new RuntimeException("Cannot delete Account with id '" + accountId + "' - Account not found.");
     }
 
-    public static void marshall() throws IOException, URISyntaxException {
-
-        File store = getFile("data-stores/account-repository.json");
-
-        ObjectMapper jsonMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        List<Account> accounts = new ArrayList<>(accountStore.values());
-        Files.write(store.toPath(), jsonMapper.writeValueAsBytes(accounts), StandardOpenOption.TRUNCATE_EXISTING);
-
+    public static List<Account> getDataStore() {
+        return new ArrayList<>(accountStore.values());
     }
 
-    public static void unmarshall() throws URISyntaxException, IOException {
-
-        File store = getFile("data-stores/account-repository.json");
-
-        ObjectMapper jsonMapper = new ObjectMapper();
-        if (store.length() > 0) {
-            List<Account> accounts = jsonMapper.readValue(store, new TypeReference<List<Account>>(){});
-            accountStore = accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));
-        } else {
-            accountStore = new HashMap<>();
-        }
+    public static void setDataStore(List<Account> accounts) {
+        accountStore = accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));
     }
 
-    public static File getFile(String filePath) throws URISyntaxException {
-        URL url = AccountRepository.class.getClassLoader().getResource(filePath);
-
-        Path location = Paths.get(url.toURI());
-        return location.toFile();
-    }
+//    public static void marshall() throws IOException, URISyntaxException {
+//
+//        File store = getFile("data-stores/account-repository.json");
+//
+//        ObjectMapper jsonMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+//        List<Account> accounts = new ArrayList<>(accountStore.values());
+//        Files.write(store.toPath(), jsonMapper.writeValueAsBytes(accounts), StandardOpenOption.TRUNCATE_EXISTING);
+//
+//    }
+//
+//    public static void unmarshall() throws URISyntaxException, IOException {
+//
+//        File store = getFile("data-stores/account-repository.json");
+//
+//        ObjectMapper jsonMapper = new ObjectMapper();
+//        if (store.length() > 0) {
+//            List<Account> accounts = jsonMapper.readValue(store, new TypeReference<List<Account>>(){});
+//            accountStore = accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));
+//        } else {
+//            accountStore = new HashMap<>();
+//        }
+//    }
+//
+//    public static File getFile(String filePath) throws URISyntaxException {
+//        URL url = AccountRepository.class.getClassLoader().getResource(filePath);
+//
+//        Path location = Paths.get(url.toURI());
+//        return location.toFile();
+//    }
 }

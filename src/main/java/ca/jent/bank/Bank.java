@@ -82,11 +82,20 @@ public class Bank {
                     case "11":
                         cliBank.saveDataStores();
                         break;
+
+                    case "12":
+                        cliBank.showUserAccounts();
+                        break;
                 }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
+    }
+
+    private void showUserAccounts() {
+        bankService.getAccountByUser(userContext)
+                   .forEach(System.out::println);
     }
 
     public User register() {
@@ -189,6 +198,7 @@ public class Bank {
                 System.out.println(" 9 Withdraw from current account");
                 System.out.println(" 10 Show account transactions");
             }
+            System.out.println(" 13 Show current user accounts");
         }
         System.out.println(" 11 Save data stores");
         System.out.println(" 12 Restore data stores");

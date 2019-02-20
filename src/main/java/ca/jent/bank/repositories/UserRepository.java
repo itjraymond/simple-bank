@@ -77,4 +77,11 @@ public class UserRepository {
         return location.toFile();
     }
 
+    public static List<User> getDataStore() {
+        return new ArrayList<>(userStore.values());
+    }
+
+    public static void setDataStore(List<User> users) {
+        userStore = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+    }
 }

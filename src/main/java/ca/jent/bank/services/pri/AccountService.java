@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class AccountService {
 
@@ -52,4 +53,7 @@ public class AccountService {
         AccountTransactionRepository.save(accountTransaction);
     }
 
+    public List<Account> getAccountsByIds(List<String> accountIds) {
+        return AccountRepository.getAccountByIds(accountIds);
+    }
 }

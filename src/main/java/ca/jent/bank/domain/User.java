@@ -1,5 +1,7 @@
 package ca.jent.bank.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +15,10 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
+    @JsonProperty("accounts")
     private Map<String, Account> accounts = new HashMap<>();
 
-    private User() {}
+    public User() {}
 
     public User(String firstname, String lastname, String email) {
         this.id = UUID.randomUUID().toString();

@@ -72,6 +72,11 @@ public class BankService {
         }
     }
 
+    public List<Account> getAccountByUser(User user) {
+        List<String> accountIds = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
+        return accountService.getAccountsByIds(accountIds);
+    }
+
     public List<AccountTransaction> getAccountActivity(User user, String accountId) {
         if (user.accountExist(accountId)) {
             return accountTransactionService.getAccountTransactionByAccountId(accountId);
