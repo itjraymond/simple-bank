@@ -1,13 +1,8 @@
 package ca.jent.bank;
 
-import ca.jent.bank.domain.Access;
 import ca.jent.bank.domain.Account;
 import ca.jent.bank.domain.AccountTransaction;
 import ca.jent.bank.domain.User;
-import ca.jent.bank.services.pri.AccessService;
-import ca.jent.bank.services.pri.AccountService;
-import ca.jent.bank.services.pri.AccountTransactionService;
-import ca.jent.bank.services.pri.UserService;
 import ca.jent.bank.services.pub.BankService;
 
 import java.util.Comparator;

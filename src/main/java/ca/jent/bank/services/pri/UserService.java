@@ -4,7 +4,6 @@ import ca.jent.bank.domain.Account;
 import ca.jent.bank.domain.User;
 import ca.jent.bank.repositories.UserRepository;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 public class UserService {

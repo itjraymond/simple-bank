@@ -20,11 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PersistenceService {
 
@@ -97,30 +94,6 @@ public class PersistenceService {
         }
     }
 
-
-//
-//    public static void marshall() throws IOException, URISyntaxException {
-//
-//        File store = getFile("data-stores/account-repository.json");
-//
-//        ObjectMapper jsonMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-//        List<Account> accounts = new ArrayList<>(accountStore.values());
-//        Files.write(store.toPath(), jsonMapper.writeValueAsBytes(accounts), StandardOpenOption.TRUNCATE_EXISTING);
-//
-//    }
-//
-//    public static void unmarshall() throws URISyntaxException, IOException {
-//
-//        File store = getFile("data-stores/account-repository.json");
-//
-//        ObjectMapper jsonMapper = new ObjectMapper();
-//        if (store.length() > 0) {
-//            List<Account> accounts = jsonMapper.readValue(store, new TypeReference<List<Account>>(){});
-//            accountStore = accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));
-//        } else {
-//            accountStore = new HashMap<>();
-//        }
-//    }
 
     public static File getFile(String filePath) throws URISyntaxException {
         URL url = AccountRepository.class.getClassLoader().getResource(filePath);

@@ -1,7 +1,6 @@
 package ca.jent.bank.repositories;
 
 import ca.jent.bank.domain.Access;
-import ca.jent.bank.domain.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
