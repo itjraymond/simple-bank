@@ -14,8 +14,10 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
-    @JsonProperty("accounts")
-    private Map<String, Account> accounts = new HashMap<>();
+    @JsonProperty("accountIds")
+    List<String> accountIds = new ArrayList<>();  // soft relationship with the Account domain entity.
+//    @JsonProperty("accounts")
+//    private Map<String, Account> accounts = new HashMap<>();
 
     public User() {}
 
@@ -54,25 +56,36 @@ public class User {
         this.email = email;
     }
 
-    public void addAccount(Account account) {
-        this.accounts.put(account.getId(), account);
+    public void addAccountId(String accountId) {
+        this.accountIds.add(accountId);
+//        this.accounts.put(account.getId(), account);
     }
 
-    public Account removeAccountById(String accountId) {
-        if (accounts.containsKey(accountId)) {
-            Account account = accounts.get(accountId);
-            accounts.remove(accountId);
-            return account;
+    public void removeAccountId(String accountId) {
+        if (!accountIds.remove(accountId)) {
+            throw new RuntimeException("Cannot remove " + this.firstname + " " + this.lastname + "'s Account with id '" + accountId + "' - Account not found.");
         }
-        throw new RuntimeException("Cannot remove " + this.firstname + " " + this.lastname + "'s Account with id '" + accountId + "' - Account not found.");
+//        if (accountIds.contains(accountId)) {
+//            accountIds.remove(accountId);
+//        }
+//        if (accounts.containsKey(accountId)) {
+//            Account account = accounts.get(accountId);
+//            accounts.remove(accountId);
+//            return account;
+//        }
     }
 
-    public List<Account> getUserAccounts() {
-        return new ArrayList<>(accounts.values());
+    public List<String> getUserAccountIds() {
+        return accountIds;
     }
 
-    public boolean accountExist(String accountId){
-        return accounts.containsKey(accountId);
+//    public List<Account> getUserAccounts() {
+//        return new ArrayList<>(accounts.values());
+//    }
+
+    public boolean accountIdExist(String accountId){
+        //return accounts.containsKey(accountId);
+        return accountIds.contains(accountId);
     }
 
     @Override
@@ -85,16 +98,16 @@ public class User {
         }
         User user = (User) o;
         return id.equals(user.id) && firstname.equals(user.firstname) && lastname.equals(user.lastname) && email.equals(
-                user.email) && accounts.equals(user.accounts);
+                user.email) && accountIds.equals(user.accountIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, email, accounts);
+        return Objects.hash(id, firstname, lastname, email, accountIds);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id='" + id + '\'' + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", accounts=" + accounts + '}';
+        return "User{" + "id='" + id + '\'' + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", accountIds=" + accountIds + '}';
     }
 }

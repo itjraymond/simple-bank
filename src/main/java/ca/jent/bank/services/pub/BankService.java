@@ -34,23 +34,25 @@ public class BankService {
 
     public Account createBankAccountFor(User user, String type) {
         Account account = accountService.createAccount(type);
-        user.addAccount(account);
+        // user.addAccount(account);
+        user.addAccountId(account.getId());
         return account;
     }
 
     public Account getBankAccountFor(User user, String accountId) {
-        if (user.accountExist(accountId)) {
+        if (user.accountIdExist(accountId)) {
             return accountService.getAccountById(accountId);
         }
         throw new RuntimeException("This user account does not exist");
     }
 
     public List<Account> getBankAccountsFor(User user) {
-        return userService.getUserAccounts(user.getId());
+//        return userService.getUserAccounts(user.getId());
+        return accountService.getAccountsByIds(user.getUserAccountIds());
     }
 
     public void deposit(User user, String accountId, double amount) {
-        if (user.accountExist(accountId)) {
+        if (user.accountIdExist(accountId)) {
             accountService.deposit(accountId, amount);
             return;
         }
@@ -58,7 +60,7 @@ public class BankService {
     }
 
     public void withdraw(User user, String accountId, double amount) {
-        if (user.accountExist(accountId)) {
+        if (user.accountIdExist(accountId)) {
             accountService.withdraw(accountId, amount);
             return;
         }
@@ -66,27 +68,28 @@ public class BankService {
     }
 
     public void deleteUserAccount(User user, String accountId) {
-        if (user.accountExist(accountId)) {
+        if (user.accountIdExist(accountId)) {
             accountService.deleteAccountById(accountId);
-            user.removeAccountById(accountId);
+            user.removeAccountId(accountId);
         }
     }
 
     public List<Account> getAccountByUser(User user) {
-        List<String> accountIds = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
-        return accountService.getAccountsByIds(accountIds);
+//        List<String> accountIds = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
+        return accountService.getAccountsByIds(user.getUserAccountIds());
+//        return accountService.getAccountsByIds(accountIds);
     }
 
     public List<AccountTransaction> getAccountActivity(User user, String accountId) {
-        if (user.accountExist(accountId)) {
+        if (user.accountIdExist(accountId)) {
             return accountTransactionService.getAccountTransactionByAccountId(accountId);
         }
         throw new RuntimeException("Account does not belong to this user.");
     }
 
     public List<AccountTransaction> getAccountActivity(User user) {
-        List<String> accounts = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
-        return accountTransactionService.getAccountTransactions(accounts);
+//        List<String> accounts = user.getUserAccounts().stream().map(Account::getId).collect(Collectors.toList());
+        return accountTransactionService.getAccountTransactions(user.getUserAccountIds());
     }
 
     public List<User> getBankUsers() {

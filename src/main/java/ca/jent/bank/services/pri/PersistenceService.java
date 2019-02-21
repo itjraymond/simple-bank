@@ -27,7 +27,6 @@ public class PersistenceService {
 
     public void saveAllRepositories() {
         try {
-            //AccountRepository.marshall();
             ObjectMapper mapper = new ObjectMapper()
                     .enable(SerializationFeature.INDENT_OUTPUT)
                     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -55,7 +54,6 @@ public class PersistenceService {
 
     public void restoreAllRepositories() {
         try {
-            //AccountRepository.unmarshall();
             ObjectMapper mapper = new ObjectMapper()
                     .enable(SerializationFeature.INDENT_OUTPUT)
                     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

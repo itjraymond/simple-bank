@@ -7,7 +7,9 @@ import ca.jent.bank.services.pub.BankService;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Bank {
 
@@ -81,6 +83,10 @@ public class Bank {
                     case "12":
                         cliBank.showUserAccounts();
                         break;
+
+                    case "13":
+                        cliBank.showUserAccounts();
+                        break;
                 }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -137,14 +143,19 @@ public class Bank {
     }
 
     public Account switchAccount(User user) {
-        user.getUserAccounts().stream().forEach(System.out::println);
+//        user.getUserAccounts().stream().forEach(System.out::println);
+        user.getUserAccountIds().forEach(System.out::println);
         System.out.println("Enter the first few char of the account ID you want to switch to:");
         String accountIdPart = scanner.nextLine();
-        return user.getUserAccounts()
-                   .stream()
-                   .filter(account -> account.getId().startsWith(accountIdPart))
-                   .findFirst()
-                   .orElseThrow(() -> new RuntimeException("Did not find the account"));
+        List<String> accountIdFound = user.getUserAccountIds()
+                                         .stream()
+                                         .filter(accountId -> accountId.startsWith(accountIdPart))
+                                         .collect(Collectors.toList());
+
+        if (accountIdFound.size() != 1) {
+            throw new RuntimeException("Account id does not exist or provide more characters");
+        }
+        return bankService.getBankAccountFor(user, accountIdFound.get(0));
     }
 
     public void showAccountTransactions(User user, String accountId) {

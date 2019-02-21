@@ -1,6 +1,5 @@
 package ca.jent.bank.services.pri;
 
-import ca.jent.bank.domain.Account;
 import ca.jent.bank.domain.User;
 import ca.jent.bank.repositories.UserRepository;
 
@@ -26,8 +25,8 @@ public class UserService {
         UserRepository.deleteUser(userId);
     }
 
-    public List<Account> getUserAccounts(String userId) {
-        User user = UserRepository.getUserById(userId);
-        return user.getUserAccounts();
-    }
+//    public List<Account> getUserAccounts(String userId) {
+//        User user = UserRepository.getUserById(userId);
+//        return user.getUserAccounts();
+//    }
 }
